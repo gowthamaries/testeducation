@@ -22,3 +22,7 @@ ELB_FLTR=`aws elbv2 describe-load-balancers --query 'LoadBalancers[*].[LoadBalan
 ELB_NAME=`eval echo $ELB_FLTR`
 aws elbv2 create-listener --load-balancer-arn $ELB_NAME --protocol HTTP --port 5000 --default-actions Type=forward,TargetGroupArn=$TARGET_NAME
 aws ecs create-service --cluster Store-VPC --service-name $dtc_site_name --task-definition $dtc_site_name --desired-count 1 --launch-type "FARGATE" --network-configuration "awsvpcConfiguration={subnets=[subnet-045b7f3a2b90fe04b, subnet-01cb8224ab579584a],securityGroups=[sg-0481ab085e5b9d2c6],assignPublicIp=ENABLED}" --load-balancers='[{"targetGroupArn": "'$TARGET_NAME'", "containerName": "'$dtc_site_name'", "containerPort": 5000 }]'
+
+
+aws elbv2 create-target-group --name ecs-Store-$dtc_site_name --protocol HTTP --port 5000 --target-type ip --vpc-id vpc-09dea383b3c5cabf7
+aws elbv2 create-listener --load-balancer-arn $dtc_upper --protocol TCP --port 5000 --default-actions Type=forward,TargetGroupArn=$TARGET_NAME
