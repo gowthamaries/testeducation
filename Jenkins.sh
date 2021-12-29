@@ -10,6 +10,10 @@ ssh -T ubuntu@11.0.2.154 <<	EOF
     echo "$dtc_site_name"        || exit 1
     echo "$dtc_lower"         || exit 1
 
+    #/bin/sh
+
+    #Domain_Name=www.deliverselect.com
+
     Firstdomname=`echo "$Domain_Name" | cut -d"." -f1`
     Seconddomname=`echo "$Domain_Name" | cut -d"." -f2`
     Thirddomname=`echo "$Domain_Name" | cut -d"." -f3`
